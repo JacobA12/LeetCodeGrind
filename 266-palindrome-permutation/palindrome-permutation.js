@@ -3,21 +3,15 @@
  * @return {boolean}
  */
 var canPermutePalindrome = function(s) {
-    let wordMap = {};
-    let numOdd = 0;
-    for(let char of s){
-        wordMap[char] = (wordMap[char] || 0) + 1;
-    }
-
-    for(let key of Object.keys(wordMap)){
-        
-        if(wordMap[key] % 2 !== 0){
-            numOdd++;
-            if(numOdd >= 2){
-                return false;
-            }
+    let map = new Array(128).fill(0);
+    let count = 0;
+    for(let i = 0; i < s.length; i++){
+        map[s.charCodeAt(i)]++;
+        if(map[s.charCodeAt(i)] % 2 === 0){
+            count--;
+        }else{
+            count++;
         }
     }
-
-    return true;
+    return count <= 1;
 };
