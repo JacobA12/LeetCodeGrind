@@ -2,10 +2,8 @@
  * @param {number} size
  */
 var MovingAverage = function(size) {
+    this.queue = [];
     this.windowSize = size;
-    this.nums = [];
-    this.head = 0;
-    this.tail = 0;
     this.sum = 0;
 };
 
@@ -14,30 +12,14 @@ var MovingAverage = function(size) {
  * @return {number}
  */
 MovingAverage.prototype.next = function(val) {
-    if(this.nums.length === 0){
-        
-        this.nums.push(val);
-        this.sum += val;
-        
-        return val;
-    }
-    
-    if(this.nums.length + 1 <= this.windowSize){
-        
-        this.nums.push(val);
-        this.sum += val;
-        this.tail++;
-        
-        return this.sum / this.nums.length;
-    }
-    
-    this.sum -= this.nums[this.head];
-    this.head++;
-    this.nums.push(val);
+    this.queue.push(val);
     this.sum += val;
-    this.tail++;
-    
-    return this.sum / this.windowSize;
+
+    if(this.queue.length > this.windowSize){
+        this.sum -= this.queue.shift();
+    }
+
+    return this.sum / this.queue.length;
 };
 
 /** 
