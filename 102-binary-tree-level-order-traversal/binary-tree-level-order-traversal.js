@@ -1,11 +1,18 @@
 var levelOrder = function (root) {
-    let levels = [];
-    function helper(node, level) {
-        if (levels.length === level) levels.push([]);
-        levels[level].push(node.val);
-        if (node.left !== null) helper(node.left, level + 1);
-        if (node.right !== null) helper(node.right, level + 1);
+    var levels = [];
+    if (root === null) return levels;
+    var queue = [root];
+    var level = 0;
+    while (queue.length !== 0) {
+        levels.push([]);
+        var level_length = queue.length;
+        for (var i = 0; i < level_length; i++) {
+            var node = queue.shift();
+            levels[level].push(node.val);
+            if (node.left !== null) queue.push(node.left);
+            if (node.right !== null) queue.push(node.right);
+        }
+        level++;
     }
-    if (root !== null) helper(root, 0);
     return levels;
 };
