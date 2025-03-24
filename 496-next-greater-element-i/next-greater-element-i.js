@@ -3,20 +3,25 @@
  * @param {number[]} nums2
  * @return {number[]}
  */
-var nextGreaterElement = function (nums1, nums2) {
+var nextGreaterElement = function(nums1, nums2) {
+    let map = {};
+    let stack = [];
     let sol = [];
-    for (let i = 0; i < nums1.length; i++) {
-        for (let j = nums2.indexOf(nums1[i]) + 1; j <= nums2.length; j++) {
-            if (j === nums2.length) {
-                sol.push(-1);
-                break;
-            }
-            if (nums2[j] > nums1[i]) {
-                sol.push(nums2[j]);
-                break;
-            }
-        }
 
+    for(let num of nums2){
+        while(num > stack[stack.length - 1]){
+            let poppedNum = stack.pop();
+            map[poppedNum] = num;
+        }
+        stack.push(num);
+    }
+    
+    while(stack.length > 0){
+        map[stack.pop()] = -1;
+    }
+
+    for(let num of nums1){
+        sol.push(map[num]);
     }
 
     return sol;
