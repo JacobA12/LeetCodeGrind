@@ -1,58 +1,37 @@
-/**
- * @param {character[][]} grid
- * @return {number}
- */
-var numIslands = function (grid) {
-    // Edge case: empty or null grid
-    if (!grid || grid.length === 0) return 0;
-
+var numIslands = function(grid) {
+    let islands = 0;
+    const visited = new Set();
     const rows = grid.length;
     const cols = grid[0].length;
-    let visited = new Set();
-    let islands = 0;
 
-    // Directions for up, down, left, right
-    const DIRECTIONS = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    const bfs = (r, c) => {
+        const q = [];
+        visited.add(`${r},${c}`);
+        q.push([r, c]);
 
-    const bfs = function (startRow, startCol) {
-        let queue = [];
-        // Mark the starting cell as visited and enqueue it
-        visited.add(`${startRow},${startCol}`);
-        queue.push([startRow, startCol]);
+        while (q.length > 0) {
+            const [row, col] = q.shift();
+            const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 
-        while (queue.length > 0) {
-            // Dequeue and destructure
-            let [row, col] = queue.shift();
-
-            // Explore the 4 neighbors
-            for (let [dr, dc] of DIRECTIONS) {
-                let nr = row + dr;  // neighbor row
-                let nc = col + dc;  // neighbor col
-
-                // Check bounds, land, and unvisited
-                if (
-                    nr >= 0 && nr < rows &&
-                    nc >= 0 && nc < cols &&
-                    grid[nr][nc] === "1" &&
-                    !visited.has(`${nr},${nc}`)
-                ) {
+            for (const [dr, dc] of directions) {
+                const nr = row + dr;
+                const nc = col + dc;
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] === "1" && !visited.has(`${nr},${nc}`)) {
+                    q.push([nr, nc]);
                     visited.add(`${nr},${nc}`);
-                    queue.push([nr, nc]);
                 }
             }
         }
     };
 
-    // Main loop: scan the grid
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             if (grid[r][c] === "1" && !visited.has(`${r},${c}`)) {
-                // Found a new island; BFS from here
+                islands += 1;
                 bfs(r, c);
-                islands++;
             }
         }
     }
 
-    return islands;
+    return islands;    
 };
