@@ -7,9 +7,21 @@ var isAnagram = function(s, t) {
     if(s.length !== t.length){
         return false;
     }
-    
-    const newS = s.split('').sort().join('');
-    const newT = t.split('').sort().join('');
 
-    return newS === newT;
+    const freqArr = new Array(26).fill(0);
+    for(let char of s){
+        freqArr[char.charCodeAt(0) - 'a'.charCodeAt(0)]++;
+    }
+
+    for(let char of t){
+        freqArr[char.charCodeAt(0) - 'a'.charCodeAt(0)]--;
+    }
+
+    for(let idx in freqArr){
+        if(freqArr[idx] !== 0){
+            return false;
+        }
+    }
+
+    return true;
 };
