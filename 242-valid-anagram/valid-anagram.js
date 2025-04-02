@@ -17,11 +17,5 @@ var isAnagram = function(s, t) {
         freqArr[char.charCodeAt(0) - 'a'.charCodeAt(0)]--;
     }
 
-    for(let idx in freqArr){
-        if(freqArr[idx] !== 0){
-            return false;
-        }
-    }
-
-    return true;
+    return !freqArr.some(count => count !== 0);
 };
