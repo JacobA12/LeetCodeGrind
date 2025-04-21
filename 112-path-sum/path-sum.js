@@ -16,25 +16,11 @@ var hasPathSum = function (root, targetSum) {
         return false;
     }
 
-    let stack = [[root, root.val]]; // [currentNode, currentSum]
-
-    while (stack.length !== 0) {
-        let [currNode, currSum] = stack.pop();
-
-        if (!currNode.left && !currNode.right && currSum === targetSum) {
-            return true;
-        }
-
-        if (currNode.left) {
-            stack.push([currNode.left, currSum + currNode.left.val]);
-        }
-
-        if (currNode.right) {
-            stack.push([currNode.right, currSum + currNode.right.val]);
-        }
-
+    if (root.left === null && root.right === null) {
+        return targetSum === root.val
     }
 
+    let newTarget = targetSum - root.val;
 
-    return false;
+    return hasPathSum(root.left, newTarget) || hasPathSum(root.right, newTarget)
 };
